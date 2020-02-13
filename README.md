@@ -9,6 +9,6 @@
 
 <p align="center">
 <a href="https://circleci.com/gh/fluidtrends/workflows/dodi"><img src="https://circleci.com/gh/fluidtrends/dodi.svg?style=svg"/></a>
-<a href="https://codeclimate.com/github/fluidtrends/rara/maintainability"><img src="https://api.codeclimate.com/v1/badges/e22794e01b98efc81b34/maintainability" /></a>
-<a href="https://codeclimate.com/github/fluidtrends/rara/test_coverage"><img src="https://api.codeclimate.com/v1/badges/e22794e01b98efc81b34/test_coverage" /></a>
+<a href="https://codeclimate.com/github/fluidtrends/dodi/maintainability"><img src="https://api.codeclimate.com/v1/badges/fff0d5acc2bfd7a08ea1/maintainability" /></a>
+<a href="https://codeclimate.com/github/fluidtrends/dodi/test_coverage"><img src="https://api.codeclimate.com/v1/badges/fff0d5acc2bfd7a08ea1/test_coverage" /></a>
 </p>
