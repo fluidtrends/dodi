@@ -1,0 +1,6 @@
+{
+    < if (hello) { %>
+        "hello": "<%= hey %>",
+    <% } %>
+    "test": "test1234"
+}
