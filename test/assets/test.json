@@ -1,0 +1,11 @@
+{
+    <% if (locals.username) { %>
+        "username": "<%= username %>",
+    <% } else { %>
+        "username": "hello",
+    <% } %>
+    "test": "test1234",
+    "info": "<%= info %>",
+    "description": <% if (locals.description) { %> "<%= description %>"
+                   <% } else { %> "default" <% } %>
+}
