@@ -3,7 +3,7 @@
 <h1 align="center"> Dodi </h1>
 <h3 align="center"> Decentralized Open Data Index </h3>
 <p align="center"> Access remote data and manage locally </p>
-<p align="center"> <img src="https://img.shields.io/github/package-json/v/fluidtrends/dodi?color=green"/></p>
+<p align="center"> <img src="https://img.shields.io/github/package-json/v/idancali/dodi?color=green"/></p>
 
 </p>
 
