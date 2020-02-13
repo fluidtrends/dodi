@@ -1,6 +1,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 const Cassi = require('cassi')
+const { Archive } = require('rara')
 
 class _ {
     constructor(index, props) {
@@ -31,6 +32,11 @@ class _ {
 
     get vault() {
         return this._vault
+    }
+
+    installArchive(args) {
+        const archive = new Archive({ dir: this.path, id: args.id, version: args.version })
+        return archive.download()
     }
 
     initialize () {

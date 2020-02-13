@@ -4,6 +4,7 @@ const savor = require('savor')
 const { Section, Environment, Index } = require('../..')
 const fs = require('fs-extra')
 const path = require('path')
+const npm = require('libnpm')
 
 savor.
 
@@ -64,6 +65,23 @@ add('should load a cached index', (context, done) => {
     const section = new Section(index, { id: "test" })
 
     savor.promiseShouldSucceed(section.initialize(), done, () => {
+    })
+}).
+
+add('should install an archive', (context, done) => {
+    fs.mkdirsSync(path.resolve(context.dir, 'test'))
+    const stub = context.stub(npm, 'extract').callsFake(() => Promise.resolve({ version: "1" }))
+    const stub2 = context.stub(npm, 'manifest').callsFake(() => Promise.resolve({ version: "1" }))
+
+    const env = new Environment()
+    const index = new Index(env, { dir: context.dir })
+    const section = new Section(index, { id: "test" })
+
+    savor.promiseShouldSucceed(section.initialize()
+                               .then(() => section.installArchive({ id: "test-archive", version: "1" })
+    ), done, () => {
+        stub.restore()
+        stub2.restore()
     })
 }).
 
