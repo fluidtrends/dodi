@@ -1,14 +1,15 @@
 const fs = require('fs-extra')
 const path = require('path')
 const Section = require('./Section')
+const Environment = require('./Environment')
 
 class _ {
-    constructor(env, props) {
-        this._env = env
+    constructor(props) {
         this._props = Object.assign({}, props)
+        this._env = new Environment(this.props.env)
         this._name = this.props.name || 'dodi'
-        this._dir = this.props.dir || (env ? env.userDir : null)
-        this._path = env ? path.resolve(this.dir, `.${this.name}`) : null
+        this._dir = this.props.dir || this.env.userDir
+        this._path = path.resolve(this.dir, `.${this.name}`)
     }
 
     get props() {
