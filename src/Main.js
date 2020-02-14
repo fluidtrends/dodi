@@ -40,7 +40,7 @@ class _ {
         return this.path && fs.existsSync(path.resolve(this.path))
     }
 
-    initialize () {
+    initialize () {        
         // Create the root first, if necessary
         this.exists || fs.mkdirsSync(this.path)
 
