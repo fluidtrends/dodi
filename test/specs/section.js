@@ -32,22 +32,8 @@ add('should not load without a valid id', (context, done) => {
     })
 }).
 
-add('should not load with a valid id but missing location', (context, done) => {
-    const index = new Index()
-    const section = new Section(index, { id: "test" })
-
-    context.expect(section.index).to.exist
-    context.expect(section.vault).to.not.exist
-    context.expect(section.id).to.equal('test')
-
-    savor.promiseShouldFail(section.initialize(), done, (error) => {
-        context.expect(error.message).to.equal(Section.ERRORS.CANNOT_INIT("no location was specified"))
-    })
-}).
-
 add('should load from scratch with a valid id and location', (context, done) => {
-    const env = new Environment()
-    const index = new Index(env, { dir: context.dir })
+    const index = new Index({ dir: context.dir })
     const section = new Section(index, { id: "test" })
 
     context.expect(section.vault).to.not.exist
@@ -60,8 +46,7 @@ add('should load from scratch with a valid id and location', (context, done) => 
 add('should load a cached index', (context, done) => {
     fs.mkdirsSync(path.resolve(context.dir, 'test'))
 
-    const env = new Environment()
-    const index = new Index(env, { dir: context.dir })
+    const index = new Index({ dir: context.dir })
     const section = new Section(index, { id: "test" })
 
     savor.promiseShouldSucceed(section.initialize(), done, () => {
@@ -73,8 +58,7 @@ add('should install an archive', (context, done) => {
     const stub = context.stub(npm, 'extract').callsFake(() => Promise.resolve({ version: "1" }))
     const stub2 = context.stub(npm, 'manifest').callsFake(() => Promise.resolve({ version: "1" }))
 
-    const env = new Environment()
-    const index = new Index(env, { dir: context.dir })
+    const index = new Index({ dir: context.dir })
     const section = new Section(index, { id: "test" })
 
     savor.promiseShouldSucceed(section.initialize()

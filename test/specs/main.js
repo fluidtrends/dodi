@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 
 const savor = require('savor')
-const { Index, Environment } = require('../..')
+const { Index } = require('../..')
 const fs = require('fs-extra')
 const path = require('path')
 
@@ -9,8 +9,7 @@ savor.
 
 add('should load from an existing location without sections', (context, done) => {
     fs.mkdirsSync(path.resolve(context.dir, 'index'))
-    const env = new Environment()
-    const index = new Index(env, { dir: "index" })
+    const index = new Index({ dir: "index" })
 
     context.expect(index.sections.length).to.equal(0)
 
@@ -20,8 +19,7 @@ add('should load from an existing location without sections', (context, done) =>
 }).
 
 add('should load from scratch without sections', (context, done) => {
-    const env = new Environment()
-    const index = new Index(env, { dir: "index" })
+    const index = new Index({ dir: "index" })
 
     savor.promiseShouldSucceed(index.initialize(), done, () => {
         context.expect(index.exists).to.be.true
@@ -29,8 +27,7 @@ add('should load from scratch without sections', (context, done) => {
 }).
 
 add('should load from scratch without sections', (context, done) => {
-    const env = new Environment()
-    const index = new Index(env, { dir: "index" })
+    const index = new Index({ dir: "index" })
 
     context.expect(index.env).to.exist 
 
@@ -40,9 +37,8 @@ add('should load from scratch without sections', (context, done) => {
 }).
 
 add('should load from scratch with a section', (context, done) => {
-    const env = new Environment()
     const sections = [{ id: "events" }]
-    const index = new Index(env, { dir: "index", sections })
+    const index = new Index({ dir: "index", sections })
 
     savor.promiseShouldSucceed(index.initialize(), done, () => {
         context.expect(index.exists).to.be.true
