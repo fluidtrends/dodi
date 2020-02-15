@@ -33,30 +33,28 @@ class _ {
     get vault() {
         return this._vault
     }
-
     installArchive(args) {
         const archive = new Archive({ dir: this.path, id: args.id, version: args.version })
         return archive.download()
     }
 
     initialize () {
-        if (this.exists) {
-            // No need to initialize again
-            return Promise.resolve()
-        }
-
         if (!this.path) {
             // First make sure the path exists
             return Promise.reject(new Error(_.ERRORS.CANNOT_INIT('no location was specified')))
         }
         
-        // Create it first
-        fs.mkdirsSync(this.path)
-        
-        // Setup the vault
-        this._vault = new Cassi.Vault({ name: 'vault', root: path.resolve(this.path) })
+        // Create it first if necessary
+        this.exists || fs.mkdirsSync(this.path)
 
-        return Promise.resolve()
+        // Let's look up the vault
+        this._vault = new Cassi.Vault({ name: _.VAULT_NAME, root: path.resolve(this.path) })
+        
+        // Create the vault if necessary
+        this.vault.exists || this.vault.create(_.VAULT_DEFAULT_PASSWORD)
+
+        // Load up the vault on our way out
+        return this.vault.load()
     }
 }
 
@@ -64,6 +62,7 @@ _.ERRORS = {
     CANNOT_INIT: (reason) => reason ? `Cannot initialize section because ${reason}` : `Cannot initialize section`
 }
 
-_.VAULT_DEFAULT_PASSWORD = 'chunky'
+_.VAULT_NAME = '.vault'
+_.VAULT_DEFAULT_PASSWORD = '-TEMPORARY-'
 
 module.exports = _

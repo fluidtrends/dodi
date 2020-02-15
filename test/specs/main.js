@@ -42,7 +42,6 @@ add('should load from scratch with a section', (context, done) => {
 
     savor.promiseShouldSucceed(index.initialize(), done, () => {
         context.expect(index.exists).to.be.true
-        context.expect(fs.existsSync(path.resolve(context.dir, 'index', 'events'))).to.be.true
     })
 }).
 
