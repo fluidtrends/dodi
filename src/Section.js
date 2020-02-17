@@ -33,6 +33,7 @@ class _ {
     get vault() {
         return this._vault
     }
+    
     installArchive(args) {
         const archive = new Archive({ dir: this.path, id: args.id, version: args.version })
         return archive.download()
