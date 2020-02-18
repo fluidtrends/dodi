@@ -11,7 +11,7 @@ add('should load from an existing location without sections', (context, done) =>
     fs.mkdirsSync(path.resolve(context.dir, 'index'))
     const index = new Index({ dir: "index" })
 
-    context.expect(index.sections.length).to.equal(0)
+    context.expect(Object.keys(index.sections).length).to.equal(0)
 
     savor.promiseShouldSucceed(index.initialize(), done, () => {
         context.expect(index.exists).to.be.true

@@ -33,7 +33,7 @@ class _ {
     }
 
     get sections () {
-        return this._sections || []
+        return this._sections || {}
     }
 
     get exists() {
@@ -45,10 +45,9 @@ class _ {
         this.exists || fs.mkdirsSync(this.path)
 
         // Let's allocate sections as needed
-        this._sections = (this.props.sections || []).map(section => new Section(this, section))
-
-        // Initialize all sections
-        return Promise.all(this.sections.map(section => section.initialize()))
+        this._sections = {} 
+        this.props.sections && this.props.sections.map(section => { this._sections[section.id] = new Section(this, section) })
+        return Promise.all(Object.values(this.sections).map(section => section.initialize()))
     }
 }
 
