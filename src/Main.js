@@ -50,17 +50,21 @@ class _ {
         return Promise.all(Object.values(this.sections).map(section => section.initialize()))
     }
 
-    installArchive(id, version, section = 'archives') {
-        if (!this.sections[section]) {
+    installArchive(args) {
+        const section = this.sections[args.section || _.DEFAULT_ARCHIVES_SECTION]
+
+        if (!section) {
             return Promise.reject(new Error(_.ERRORS.CANNOT_FIND_SECTION('it does not exist')))
         }
 
-        return this.sections[section].installArchive({ id, version })
+        return section.installArchive({ id: args.id, version: args.section })
     }
 }
 
 _.ERRORS = {
     CANNOT_FIND_SECTION: (reason) => reason ? `Cannot find the section because ${reason}` : `Cannot find the section`
 }
+
+_.DEFAULT_ARCHIVES_SECTION = 'archives'
 
 module.exports = _

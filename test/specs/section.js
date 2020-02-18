@@ -105,7 +105,7 @@ add('should find an archive', (context, done) => {
 add('should not install an archive in a non-existent section', (context, done) => {    
     const index = new Index({ dir: context.dir })
 
-    savor.promiseShouldFail(index.installArchive("archive", "1", "oops"), done, (error) => {
+    savor.promiseShouldFail(index.installArchive({ id: "archive", version: "1", section: "oops" }), done, (error) => {
         context.expect(error.message).to.equal(Index.ERRORS.CANNOT_FIND_SECTION("it does not exist"))
     })
 }).
@@ -115,7 +115,7 @@ add('should install an archive in the default section', (context, done) => {
     const index = new Index({ dir: context.dir, sections: [{ id: "archives" }] })
     const stub = context.stub(Archive.prototype, 'download').callsFake(() => Promise.resolve({ version: "1" }))
 
-    savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive("archive", "1")), done, (data) => {
+    savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive({ id: "archive", version: "1" })), done, (data) => {
         stub.restore()
         context.expect(data.id).to.equal("archive")
     })
@@ -126,7 +126,7 @@ add('should install an archive in a specified section', (context, done) => {
     const index = new Index({ dir: context.dir, sections: [{ id: "test" }] })
     const stub = context.stub(Archive.prototype, 'download').callsFake(() => Promise.resolve({ version: "1" }))
 
-    savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive("archive", "1", "test")), done, (data) => {
+    savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive({ id: "archive", version: "1", section: "test" })), done, (data) => {
         stub.restore()
         context.expect(data.id).to.equal("archive")
     })
