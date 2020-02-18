@@ -49,9 +49,18 @@ class _ {
         this.props.sections && this.props.sections.map(section => { this._sections[section.id] = new Section(this, section) })
         return Promise.all(Object.values(this.sections).map(section => section.initialize()))
     }
+
+    installArchive(id, version, section = 'archives') {
+        if (!this.sections[section]) {
+            return Promise.reject(new Error(_.ERRORS.CANNOT_FIND_SECTION('it does not exist')))
+        }
+
+        return this.sections[section].installArchive({ id, version })
+    }
 }
 
 _.ERRORS = {
+    CANNOT_FIND_SECTION: (reason) => reason ? `Cannot find the section because ${reason}` : `Cannot find the section`
 }
 
 module.exports = _

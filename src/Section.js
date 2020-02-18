@@ -56,7 +56,7 @@ class _ {
                 .then((archive) => resolve(archive))                
 
                 // If not, then download it
-                .catch((e) => archive.download().then((archive) => resolve(archive)))
+                .catch((e) => archive.download().then(() => resolve(archive)))
         })
 
         // And let's also load it if necessary

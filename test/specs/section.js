@@ -5,6 +5,7 @@ const { Section, Environment, Index } = require('../..')
 const fs = require('fs-extra')
 const path = require('path')
 const { Archive } = require('rara')
+const npm = require('libnpm')
 
 savor.
 
@@ -100,5 +101,36 @@ add('should find an archive', (context, done) => {
         context.expect(data.id).to.equal("archive")
     })
 }).
+
+add('should not install an archive in a non-existent section', (context, done) => {    
+    const index = new Index({ dir: context.dir })
+
+    savor.promiseShouldFail(index.installArchive("archive", "1", "oops"), done, (error) => {
+        context.expect(error.message).to.equal(Index.ERRORS.CANNOT_FIND_SECTION("it does not exist"))
+    })
+}).
+
+add('should install an archive in the default section', (context, done) => {    
+    fs.mkdirsSync(path.resolve(context.dir, 'archives'))
+    const index = new Index({ dir: context.dir, sections: [{ id: "archives" }] })
+    const stub = context.stub(Archive.prototype, 'download').callsFake(() => Promise.resolve({ version: "1" }))
+
+    savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive("archive", "1")), done, (data) => {
+        stub.restore()
+        context.expect(data.id).to.equal("archive")
+    })
+}).
+
+add('should install an archive in a specified section', (context, done) => {    
+    fs.mkdirsSync(path.resolve(context.dir, 'test'))
+    const index = new Index({ dir: context.dir, sections: [{ id: "test" }] })
+    const stub = context.stub(Archive.prototype, 'download').callsFake(() => Promise.resolve({ version: "1" }))
+
+    savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive("archive", "1", "test")), done, (data) => {
+        stub.restore()
+        context.expect(data.id).to.equal("archive")
+    })
+}).
+
 
 run('[Dodi] Section')
