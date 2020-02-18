@@ -53,7 +53,8 @@ add('should load a cached index', (context, done) => {
     })
 }).
 
-add('should install an archive', (context, done) => {
+
+add('should not install an existing archive', (context, done) => {
     fs.mkdirsSync(path.resolve(context.dir, 'test'))
     const stub = context.stub(Archive.prototype, 'download').callsFake(() => Promise.resolve({ version: "1" }))
     
@@ -64,6 +65,39 @@ add('should install an archive', (context, done) => {
                                .then(() => section.installArchive({ id: "test-archive", version: "1" })
     ), done, () => {
         stub.restore()
+    })
+}).
+
+add('should install an archive', (context, done) => {
+    savor.addAsset('assets/test-archive', '.dodi/test/archive/1', context)
+    const stub = context.stub(Archive.prototype, 'download').callsFake(() => Promise.resolve({ version: "1" }))
+    
+    const index = new Index({ dir: context.dir })
+    const section = new Section(index, { id: "test" })
+
+    savor.promiseShouldSucceed(section.initialize()
+                               .then(() => section.installArchive({ id: "archive", version: "1" })
+    ), done, () => {
+        stub.restore()
+    })
+}).
+
+add('should not find a non-existent archive', (context, done) => {    
+    const index = new Index({ dir: context.dir })
+    const section = new Section(index, { id: "test" })
+
+    savor.promiseShouldFail(section.findArchive({ id: "archive", version: "1" }), done, (error) => {
+        context.expect(error.message).to.equal(Section.ERRORS.CANNOT_LOAD("the archive does not exist"))
+    })
+}).
+
+add('should find an archive', (context, done) => {    
+    const index = new Index({ dir: context.dir })
+    const section = new Section(index, { id: "test" })
+
+    savor.addAsset('assets/test-archive', '.dodi/test/archive/1', context)
+    savor.promiseShouldSucceed(section.findArchive({ id: "archive", version: "1" }), done, (data) => {
+        context.expect(data.id).to.equal("archive")
     })
 }).
 

@@ -1,13 +1,14 @@
-const fs = require('fs-extra')
 const path = require('path')
 const Cassi = require('cassi')
 const { Archive } = require('rara')
+const fs = require('fs-extra')
 
 class _ {
     constructor(index, props) {
         this._index = index
         this._props = Object.assign({}, props)
         this._path = (index && index.dir && this.props.id) ? path.resolve(this.index.path, this.props.id) : null
+
     }
 
     get index() {
@@ -33,10 +34,33 @@ class _ {
     get vault() {
         return this._vault
     }
-    
+
+    findArchive(args) {
+        const archive = new Archive({ dir: this.path, id: args.id, version: args.version  })
+
+        if (!archive.exists) {
+            // It has not be installed yet
+            return Promise.reject(new Error(_.ERRORS.CANNOT_LOAD('the archive does not exist')))
+        }
+
+        // Looks like we got it, let's send it back and load if necessary
+        return args.load ? archive.load() : Promise.resolve(archive)
+    }
+
     installArchive(args) {
-        const archive = new Archive({ dir: this.path, id: args.id, version: args.version })
-        return archive.download()
+        const archive = new Archive({ dir: this.path, id: args.id, version: args.version  })
+
+        return new Promise((resolve, reject) => {
+            // First check if it's cached
+            this.findArchive({ dir: this.path, id: args.id, version: args.version })
+                .then((archive) => resolve(archive))                
+
+                // If not, then download it
+                .catch((e) => archive.download().then((archive) => resolve(archive)))
+        })
+
+        // And let's also load it if necessary
+        .then((archive) => args.load ? archive.load() : archive)
     }
 
     initialize () {
@@ -60,7 +84,8 @@ class _ {
 }
 
 _.ERRORS = {
-    CANNOT_INIT: (reason) => reason ? `Cannot initialize section because ${reason}` : `Cannot initialize section`
+    CANNOT_INIT: (reason) => reason ? `Cannot initialize section because ${reason}` : `Cannot initialize section`,
+    CANNOT_LOAD: (reason) => reason ? `Cannot load section because ${reason}` : `Cannot load section`
 }
 
 _.VAULT_NAME = '.vault'
