@@ -1,6 +1,6 @@
 {
   "name": "dodi",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "description": "Decentralized Open Data Index",
   "scripts": {
     "test": "savor test",
