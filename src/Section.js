@@ -76,10 +76,7 @@ class _ {
         this._vault = new Cassi.Vault({ name: _.VAULT_NAME, root: path.resolve(this.path) })
         
         // Create the vault if necessary
-        this.vault.exists || this.vault.create(_.VAULT_DEFAULT_PASSWORD)
-
-        // Load up the vault on our way out
-        return this.vault.load()
+        return this.vault.exists ? this.vault.load() : this.vault.create(_.VAULT_DEFAULT_PASSWORD) 
     }
 }
 
