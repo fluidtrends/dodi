@@ -6,6 +6,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const { Archive } = require('rara')
 const npm = require('libnpm')
+const npmcore = require('npm')
 
 savor.
 
@@ -111,12 +112,23 @@ add('should not install an archive in a non-existent section', (context, done) =
 }).
 
 add('should install an archive in the default section', (context, done) => {    
+    const stub2 = context.stub(npmcore, 'load').callsFake((options, cb) => cb(null, {
+        commands: {
+            install: (cb) => cb(null, { test: "1234" })
+        }
+    }))  
+    const stub3 = context.stub(npm, 'extract').callsFake(() => Promise.resolve({ version: '1.1.3' }))
+    const stub4 = context.stub(npm, 'manifest').callsFake(() => Promise.resolve({ version: '1.1.3' }))
+    
     fs.mkdirsSync(path.resolve(context.dir, 'archives'))
     const index = new Index({ dir: context.dir, sections: [{ id: "archives" }] })
     const stub = context.stub(Archive.prototype, 'download').callsFake(() => Promise.resolve({ version: "1" }))
 
     savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive({ id: "archive", version: "1" })), done, (data) => {
         stub.restore()
+        stub2.restore()
+        stub3.restore()
+        stub4.restore()
         context.expect(data.id).to.equal("archive")
     })
 }).

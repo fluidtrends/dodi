@@ -38,13 +38,16 @@ class _ {
     findArchive(args) {
         const archive = new Archive({ dir: this.path, id: args.id, version: args.version  })
 
-        if (!archive.exists) {
-            // It has not be installed yet
-            return Promise.reject(new Error(_.ERRORS.CANNOT_LOAD('the archive does not exist')))
-        }
+        return archive.initialize()
+                      .then(() => {
+                        if (!archive.exists) {
+                            // It has not be installed yet
+                            return Promise.reject(new Error(_.ERRORS.CANNOT_LOAD('the archive does not exist')))
+                        }                
+                        // Looks like we got it, let's send it back and load if necessary
+                        return args.load ? archive.load() : Promise.resolve(archive)
+                      })
 
-        // Looks like we got it, let's send it back and load if necessary
-        return args.load ? archive.load() : Promise.resolve(archive)
     }
 
     installArchive(args) {
