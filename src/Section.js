@@ -48,7 +48,7 @@ class _ {
 
         // First check if it's cached
         return this.findArchive({ dir: this.path, id: args.id, version: args.version })
-                   .then((archive) => archive && archive.download().then(() => args.load ? archive.load() : archive))           
+                   .then((_archive) => _archive ? _archive : archive.download().then(() => args.load ? archive.load() : archive))           
     }
 
     initialize () {
