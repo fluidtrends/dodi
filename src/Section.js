@@ -44,7 +44,7 @@ class _ {
     }
 
     installArchive(args) {
-        const archive = new Archive({ dir: this.path, id: args.id, version: args.version  })
+        const archive = new Archive(Object.assign({}, { dir: this.path }, args))
 
         // First check if it's cached
         return this.findArchive({ dir: this.path, id: args.id, version: args.version })
