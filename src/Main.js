@@ -57,7 +57,7 @@ class _ {
             return Promise.reject(new Error(_.ERRORS.CANNOT_FIND_SECTION('it does not exist')))
         }
 
-        return section.installArchive({ id: args.id, version: args.section })
+        return section.installArchive({ silent: args.silent, id: args.id, version: args.section })
     }
 }
 
