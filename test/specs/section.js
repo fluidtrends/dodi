@@ -88,8 +88,8 @@ add('should not find a non-existent archive', (context, done) => {
     const index = new Index({ dir: context.dir })
     const section = new Section(index, { id: "test" })
 
-    savor.promiseShouldFail(section.findArchive({ id: "archive", version: "1" }), done, (error) => {
-        context.expect(error.message).to.equal(Section.ERRORS.CANNOT_LOAD("the archive does not exist"))
+    savor.promiseShouldSucceed(section.findArchive({ id: "archive", version: "1" }), done, (data) => {
+        context.expect(data).to.be.null
     })
 }).
 
@@ -129,7 +129,7 @@ add('should install an archive in the default section', (context, done) => {
         stub2.restore()
         stub3.restore()
         stub4.restore()
-        context.expect(data.id).to.equal("archive")
+        context.expect(data).to.be.null
     })
 }).
 
@@ -140,7 +140,7 @@ add('should install an archive in a specified section', (context, done) => {
 
     savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive({ id: "archive", version: "1", section: "test" })), done, (data) => {
         stub.restore()
-        context.expect(data.id).to.equal("archive")
+        context.expect(data).to.be.null
     })
 }).
 
