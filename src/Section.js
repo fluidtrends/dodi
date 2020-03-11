@@ -36,7 +36,8 @@ class _ {
     }
 
     findArchive(args) {
-        const archive = new Archive({ dir: this.path, id: args.id, version: args.version  })
+        const archiveArgs = Object.assign({}, { dir: this.path }, args)
+        const archive = new Archive(archiveArgs)
 
         return archive.initialize()
                       .then(() => archive.exists ? (args.load ? archive.load() : archive) : null)
