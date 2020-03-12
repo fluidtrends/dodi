@@ -1,6 +1,6 @@
 {
   "name": "dodi",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Decentralized Open Data Index",
   "scripts": {
     "test": "savor test",
@@ -20,7 +20,7 @@
   "dependencies": {
     "cacache": "^14.0.0",
     "cassi": "^1.1.0",
-    "rara": "^1.4.0"
+    "rara": "^1.4.1"
   },
   "devDependencies": {
     "savor": "^1.1.2"
