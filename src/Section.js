@@ -74,6 +74,6 @@ _.ERRORS = {
     CANNOT_INIT: (reason) => reason ? `Cannot initialize section because ${reason}` : `Cannot initialize section`
 }
 
-_.VAULT_NAME = '.vault'
+_.VAULT_NAME = '.data'
 
 module.exports = _
