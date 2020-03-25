@@ -8,7 +8,6 @@ class _ {
         this._index = index
         this._props = Object.assign({}, props)
         this._path = (index && index.dir && this.props.id) ? path.resolve(this.index.path, this.props.id) : null
-
     }
 
     get index() {
@@ -66,7 +65,7 @@ class _ {
         this._vault = new Cassi.Vault({ name: _.VAULT_NAME, root: path.resolve(this.path) })
         
         // Create the vault if necessary
-        return this.vault.exists ? this.vault.load() : this.vault.create(_.VAULT_DEFAULT_PASSWORD) 
+        return this._vaults.initialize()
     }
 }
 
@@ -75,6 +74,5 @@ _.ERRORS = {
 }
 
 _.VAULT_NAME = '.vault'
-_.VAULT_DEFAULT_PASSWORD = '-TEMPORARY-'
 
 module.exports = _
