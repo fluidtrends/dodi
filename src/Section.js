@@ -66,7 +66,7 @@ class _ {
         this._vault = new Cassi.Vault({ service, name: _.VAULT_NAME, root: path.resolve(this.path) })
         
         // Create the vault if necessary
-        return this._vaults.initialize()
+        return this._vault.initialize()
     }
 }
 
