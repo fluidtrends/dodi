@@ -62,7 +62,8 @@ class _ {
         this.exists || fs.mkdirsSync(this.path)
 
         // Let's look up the vault
-        this._vault = new Cassi.Vault({ name: _.VAULT_NAME, root: path.resolve(this.path) })
+        const service = `${this.index.name}.${this.id}`
+        this._vault = new Cassi.Vault({ service, name: _.VAULT_NAME, root: path.resolve(this.path) })
         
         // Create the vault if necessary
         return this._vaults.initialize()
