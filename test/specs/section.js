@@ -97,7 +97,7 @@ add('should find an archive', (context, done) => {
     const index = new Index({ dir: context.dir })
     const section = new Section(index, { id: "test" })
 
-    savor.addAsset('assets/test-archive', '.dodi/test/archive/1', context)
+    savor.addAsset('assets/test-archive', '.dodi/test/archive/1/archive', context)
     savor.promiseShouldSucceed(section.findArchive({ id: "archive", version: "1" }), done, (data) => {
         context.expect(data.id).to.equal("archive")
     })
@@ -129,7 +129,6 @@ add('should install an archive in the default section', (context, done) => {
         stub2.restore()
         stub3.restore()
         stub4.restore()
-        context.expect(data).to.be.null
     })
 }).
 
@@ -140,7 +139,6 @@ add('should install an archive in a specified section', (context, done) => {
 
     savor.promiseShouldSucceed(index.initialize().then(() => index.installArchive({ id: "archive", version: "1", section: "test" })), done, (data) => {
         stub.restore()
-        context.expect(data).to.be.null
     })
 }).
 
