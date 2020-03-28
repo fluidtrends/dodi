@@ -44,7 +44,6 @@ class _ {
 
         return archive.initialize()
                       .then(() => archive.exists ? (args.load ? archive.load() : archive) : null)
-
     }
 
     installArchive(args) {
@@ -53,7 +52,9 @@ class _ {
 
         // First check if it's cached
         return this.findArchive(archiveArgs)
-                   .then((_archive) => _archive ? _archive : archive.download().then(() => args.load ? archive.load() : archive))           
+                   .then((_archive) => {
+                       return _archive ? (args.load ? _archive.load() : _archive) : archive.download().then(() => args.load ? archive.load() : archive)
+                   })           
     }
 
     initialize () {
