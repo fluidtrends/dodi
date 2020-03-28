@@ -7,7 +7,11 @@ class _ {
     constructor(index, props) {
         this._index = index
         this._props = Object.assign({}, props)
-        this._path = (index && index.dir && this.props.id) ? path.resolve(this.index.path, this.props.id) : null
+        this._path = (index && index.dir && this.props.id) ? path.resolve(this.index.path, `${this.props.secure ? '.' : ''}${this.props.id}`) : null
+    }
+
+    get isSecure() {
+        return this.props.secure
     }
 
     get index() {
@@ -40,7 +44,6 @@ class _ {
 
         return archive.initialize()
                       .then(() => archive.exists ? (args.load ? archive.load() : archive) : null)
-
     }
 
     installArchive(args) {
@@ -49,7 +52,9 @@ class _ {
 
         // First check if it's cached
         return this.findArchive(archiveArgs)
-                   .then((_archive) => _archive ? _archive : archive.download().then(() => args.load ? archive.load() : archive))           
+                   .then((_archive) => {
+                       return _archive ? (args.load ? _archive.load() : _archive) : archive.download().then(() => args.load ? archive.load() : archive)
+                   })           
     }
 
     initialize () {
