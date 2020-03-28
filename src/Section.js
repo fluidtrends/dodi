@@ -7,7 +7,11 @@ class _ {
     constructor(index, props) {
         this._index = index
         this._props = Object.assign({}, props)
-        this._path = (index && index.dir && this.props.id) ? path.resolve(this.index.path, this.props.id) : null
+        this._path = (index && index.dir && this.props.id) ? path.resolve(this.index.path, `${this.props.secure ? '.' : ''}${this.props.id}`) : null
+    }
+
+    get isSecure() {
+        return this.props.secure
     }
 
     get index() {
