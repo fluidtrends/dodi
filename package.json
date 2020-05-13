@@ -1,12 +1,16 @@
 {
   "name": "dodi",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "description": "Decentralized Open Data Index",
   "scripts": {
     "test": "savor test",
     "coverage": "savor coverage"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fluidtrends/rara.git"
