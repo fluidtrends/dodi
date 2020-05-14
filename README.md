@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-<a href="https://circleci.com/gh/fluidtrends/workflows/dodi"><img src="https://circleci.com/gh/fluidtrends/dodi.svg?style=svg"/></a>
+<a href="https://github.com/fluidtrends/dodi/actions?query=workflow%3Abuild"><img src="https://github.com/fluidtrends/dodi/workflows/build/badge.svg"/></a>
 <a href="https://codeclimate.com/github/fluidtrends/dodi/maintainability"><img src="https://api.codeclimate.com/v1/badges/fff0d5acc2bfd7a08ea1/maintainability" /></a>
 <a href="https://codeclimate.com/github/fluidtrends/dodi/test_coverage"><img src="https://api.codeclimate.com/v1/badges/fff0d5acc2bfd7a08ea1/test_coverage" /></a>
 </p>
