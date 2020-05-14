@@ -1,13 +1,34 @@
-const path = require('path')
-const Cassi = require('cassi')
-const { Archive } = require('rara')
-const fs = require('fs-extra')
+import fs from 'fs-extra'
+import path from 'path'
 
-class _ {
-    constructor(index, props) {
+import {
+    Vault 
+} from 'cassi'
+import { 
+    Archive 
+} from 'rara'
+
+import {
+    Index,
+    ISection
+} from '.'
+
+export class Section implements ISection {
+    public static ERRORS = {
+        CANNOT_INIT: (reason?: string) => reason ? `Cannot initialize section because ${reason}` : `Cannot initialize section`
+    }
+
+    public static VAULT_NAME = '.data'
+
+    protected _index?: Index;
+    protected _props: any; 
+    protected _path?: string;
+    protected _vault?: Vault;
+
+    constructor(index?: Index, props?: any) {
         this._index = index
         this._props = Object.assign({}, props)
-        this._path = (index && index.dir && this.props.id) ? path.resolve(this.index.path, `${this.props.secure ? '.' : ''}${this.props.id}`) : null
+        this._path = (index && index.dir && this.props.id) ? path.resolve(this.index!.path, `${this.props.secure ? '.' : ''}${this.props.id}`) : undefined
     }
 
     get isSecure() {
@@ -38,21 +59,21 @@ class _ {
         return this._vault
     }
 
-    findArchive(args) {
+    async findArchive(args: any) {
         const archiveArgs = Object.assign({}, { dir: this.path }, args)
         const archive = new Archive(archiveArgs)
 
         return archive.initialize()
-                      .then(() => archive.exists ? (args.load ? archive.load() : archive) : null)
+                      .then(() => archive.exists ? (args.load ? archive.load() : archive) : undefined)
     }
 
-    installArchive(args) {
+    async installArchive(args: any) {
         const archiveArgs = Object.assign({}, { dir: this.path }, args)
         const archive = new Archive(archiveArgs)
 
         // First check if it's cached
         return this.findArchive(archiveArgs)
-                   .then((_archive) => {
+                   .then((_archive?: any) => {
                        return _archive ? (args.load ? _archive.load() : _archive) : archive.download().then(() => args.load ? archive.load() : archive)
                    })           
     }
@@ -60,25 +81,17 @@ class _ {
     initialize () {
         if (!this.path) {
             // First make sure the path exists
-            return Promise.reject(new Error(_.ERRORS.CANNOT_INIT('no location was specified')))
+            return Promise.reject(new Error(Section.ERRORS.CANNOT_INIT('no location was specified')))
         }
         
         // Create it first if necessary
         this.exists || fs.mkdirsSync(this.path)
 
         // Let's look up the vault
-        const service = `${this.index.name}.${this.id}`
-        this._vault = new Cassi.Vault({ service, name: _.VAULT_NAME, root: path.resolve(this.path) })
+        const service = `${this.index!.name}.${this.id}`
+        this._vault = new Vault({ service, name: Section.VAULT_NAME, root: path.resolve(this.path) })
         
         // Create the vault if necessary
         return this._vault.initialize()
     }
 }
-
-_.ERRORS = {
-    CANNOT_INIT: (reason) => reason ? `Cannot initialize section because ${reason}` : `Cannot initialize section`
-}
-
-_.VAULT_NAME = '.data'
-
-module.exports = _

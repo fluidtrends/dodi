@@ -1,7 +1,15 @@
-const platformData = require('platform')
+import * as platformData from 'platform'
 
-class _ {
-    constructor(props) {
+import {
+    IEnvironment
+} from '.'
+
+export class Environment implements IEnvironment {
+    protected _props: any;
+    protected _userDir?: string;
+    protected _platform: any; 
+
+    constructor(props: any) {
         this._props = Object.assign({}, props)
         this._userDir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
         this._platform = Object.assign({}, platformData)
@@ -19,5 +27,3 @@ class _ {
         return this._platform
     }
 }
-
-module.exports = _

@@ -1,10 +1,26 @@
-const fs = require('fs-extra')
-const path = require('path')
-const Section = require('./Section')
-const Environment = require('./Environment')
+import fs from 'fs-extra'
+import path from 'path'
 
-class _ {
-    constructor(props) {
+import {
+    Environment,
+    Section
+} from '.'
+
+export class Index {
+    protected _props: any;
+    protected _env: Environment;
+    protected _name: string;
+    protected _dir: string;
+    protected _path: string;
+    protected _sections: any;
+
+    public static ERRORS = {
+        CANNOT_FIND_SECTION: (reason?: string) => reason ? `Cannot find the section because ${reason}` : `Cannot find the section`
+    }
+    
+    public static DEFAULT_ARCHIVES_SECTION = 'archives'
+
+    constructor(props?: any) {
         this._props = Object.assign({}, props)
         this._env = new Environment(this.props.env)
         this._name = this.props.name || 'dodi'
@@ -46,25 +62,17 @@ class _ {
 
         // Let's allocate sections as needed
         this._sections = {} 
-        this.props.sections && this.props.sections.map(section => { this._sections[section.id] = new Section(this, section) })
-        return Promise.all(Object.values(this.sections).map(section => section.initialize()))
+        this.props.sections && this.props.sections.map((section: any) => { this._sections[section.id] = new Section(this, section) })
+        return Promise.all(Object.values(this.sections).map((section: any) => section.initialize()))
     }
 
-    installArchive(args) {
-        const section = this.sections[args.section || _.DEFAULT_ARCHIVES_SECTION]
+    installArchive(args: any) {
+        const section = this.sections[args.section || Index.DEFAULT_ARCHIVES_SECTION]
 
         if (!section) {
-            return Promise.reject(new Error(_.ERRORS.CANNOT_FIND_SECTION('it does not exist')))
+            return Promise.reject(new Error(Index.ERRORS.CANNOT_FIND_SECTION('it does not exist')))
         }
 
         return section.installArchive({ silent: args.silent, id: args.id, version: args.version })
     }
 }
-
-_.ERRORS = {
-    CANNOT_FIND_SECTION: (reason) => reason ? `Cannot find the section because ${reason}` : `Cannot find the section`
-}
-
-_.DEFAULT_ARCHIVES_SECTION = 'archives'
-
-module.exports = _

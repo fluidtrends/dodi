@@ -1,25 +1,23 @@
-export = _;
-declare class _ {
+import { Environment } from '.';
+export declare class Index {
+    protected _props: any;
+    protected _env: Environment;
+    protected _name: string;
+    protected _dir: string;
+    protected _path: string;
+    protected _sections: any;
+    static ERRORS: {
+        CANNOT_FIND_SECTION: (reason?: string | undefined) => string;
+    };
+    static DEFAULT_ARCHIVES_SECTION: string;
     constructor(props: any);
-    _props: any;
-    _env: import("./Environment");
-    _name: any;
-    _dir: any;
-    _path: string;
     get props(): any;
-    get env(): import("./Environment");
-    get dir(): any;
-    get name(): any;
+    get env(): Environment;
+    get dir(): string;
+    get name(): string;
     get path(): string;
-    get sections(): {};
+    get sections(): any;
     get exists(): boolean | "";
     initialize(): Promise<any[]>;
-    _sections: {} | undefined;
     installArchive(args: any): any;
-}
-declare namespace _ {
-    export namespace ERRORS {
-        export function CANNOT_FIND_SECTION(reason: any): string;
-    }
-    export const DEFAULT_ARCHIVES_SECTION: string;
 }
