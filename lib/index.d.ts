@@ -1,3 +1,4 @@
-export const Index: typeof import("./Main");
-export const Section: typeof import("./Section");
-export const Environment: typeof import("./Environment");
+export * from './Main';
+export * from './Environment';
+export * from './Section';
+export * from './types';

@@ -1,14 +1,19 @@
-/* eslint-disable no-unused-expressions */
+import * as platform from 'platform'
+import fs from 'fs-extra'
+import path from 'path'
 
-const savor = require('savor')
-const { Environment } = require('../..')
-const fs = require('fs-extra')
-const path = require('path')
-const platform = require('platform')
+import savor, {
+    Context,
+    Completion
+} from 'savor'
+
+import { 
+    Environment
+} from '../../src'
 
 savor.
 
-add('should load a basic environment', (context, done) => {
+add('should load a basic environment', (context: Context, done: Completion) => {
     const env = new Environment({ test: "test1234" })
 
     const userDir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']

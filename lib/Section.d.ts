@@ -1,24 +1,23 @@
-export = _;
-declare class _ {
-    constructor(index: any, props: any);
-    _index: any;
-    _props: any;
-    _path: string | null;
+import { Vault } from 'cassi';
+import { Index, ISection } from '.';
+export declare class Section implements ISection {
+    static ERRORS: {
+        CANNOT_INIT: (reason?: string | undefined) => string;
+    };
+    static VAULT_NAME: string;
+    protected _index: Index;
+    protected _props: any;
+    protected _path?: string;
+    protected _vault?: Vault;
+    constructor(index: Index, props: any);
     get isSecure(): any;
-    get index(): any;
+    get index(): Index;
     get props(): any;
-    get path(): string | null;
+    get path(): string | undefined;
     get id(): any;
-    get exists(): boolean | "" | null;
-    get vault(): import("cassi").Vault | undefined;
-    findArchive(args: any): any;
-    installArchive(args: any): any;
+    get exists(): boolean | "" | undefined;
+    get vault(): Vault | undefined;
+    findArchive(args: any): Promise<any>;
+    installArchive(args: any): Promise<any>;
     initialize(): Promise<unknown>;
-    _vault: import("cassi").Vault | undefined;
-}
-declare namespace _ {
-    export namespace ERRORS {
-        export function CANNOT_INIT(reason: any): string;
-    }
-    export const VAULT_NAME: string;
 }
