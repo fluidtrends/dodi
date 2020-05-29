@@ -19,6 +19,6 @@ export declare class Section implements ISection {
     get exists(): boolean | "" | undefined;
     get vault(): Vault | undefined;
     findArchive(args: any): Promise<Archive | undefined>;
-    installArchive(args: any): Promise<any>;
+    installArchive(args: any): Promise<Archive>;
     initialize(): Promise<unknown>;
 }

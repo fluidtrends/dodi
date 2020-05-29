@@ -1,8 +1,8 @@
 <p align="center"> <img src="https://raw.githubusercontent.com/fluidtrends/dodi/master/logo.png" width="256px"> 
 
 <h1 align="center"> Dodi </h1>
-<h3 align="center"> Decentralized Open Data Index </h3>
-<p align="center"> Access remote data and manage locally </p>
+<h3 align="center"> Distributed Open Data Index </h3>
+<p align="center"> Access remote data locally </p>
 <p align="center"> <img src="https://img.shields.io/github/package-json/v/idancali/dodi?color=green"/></p>
 
 </p>

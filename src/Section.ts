@@ -62,19 +62,25 @@ export class Section implements ISection {
     async findArchive(args: any) {
         const archiveArgs = Object.assign({}, { dir: this.path }, args)
         const archive = new Archive(archiveArgs)
-        return archive.initialize()
-                      .then(() => archive.exists ? (args.load ? archive.load() : archive) : undefined)
+        
+        await archive.initialize()
+        
+        return archive.exists ? (args.load ? archive.load() : archive) : undefined
     }
 
     async installArchive(args: any) {
         const archiveArgs = Object.assign({}, { dir: this.path }, args)
         const archive = new Archive(archiveArgs)
 
-        // First check if it's cached
-        return this.findArchive(archiveArgs)
-                   .then((_archive?: any) => {
-                       return _archive ? (args.load ? _archive.load() : _archive) : archive.download().then(() => args.load ? archive.load() : archive)
-                   })           
+        const _archive = await this.findArchive(archiveArgs)
+
+        if (_archive) {
+            return args.load ? _archive.load() : _archive
+        }
+        
+        await archive.download()
+
+        return args.load ? archive.load() : archive
     }
 
     initialize () {
