@@ -10,7 +10,7 @@ export declare class Index {
         CANNOT_FIND_SECTION: (reason?: string | undefined) => string;
     };
     static DEFAULT_ARCHIVES_SECTION: string;
-    constructor(props: any);
+    constructor(props?: any);
     get props(): any;
     get env(): Environment;
     get dir(): string;
