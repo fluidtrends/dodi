@@ -7,7 +7,7 @@ export interface IEnvironment {
 export interface IIndex {
 }
 export interface ISection {
-    readonly index: IIndex;
+    readonly index?: IIndex;
     readonly props: any;
     readonly path?: string;
     readonly vault?: Vault;

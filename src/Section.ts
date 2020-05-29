@@ -62,7 +62,6 @@ export class Section implements ISection {
     async findArchive(args: any) {
         const archiveArgs = Object.assign({}, { dir: this.path }, args)
         const archive = new Archive(archiveArgs)
-
         return archive.initialize()
                       .then(() => archive.exists ? (args.load ? archive.load() : archive) : undefined)
     }
