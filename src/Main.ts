@@ -5,6 +5,7 @@ import {
     Environment,
     Section
 } from '.'
+import { install } from 'rara/lib/Registry';
 
 export class Index {
     protected _props: any;
@@ -66,13 +67,17 @@ export class Index {
         return Promise.all(Object.values(this.sections).map((section: any) => section.initialize()))
     }
 
-    installArchive(args: any) {
+    async installArchive(args: any, installDeps: boolean = true) {
         const section = this.sections[args.section || Index.DEFAULT_ARCHIVES_SECTION]
 
         if (!section) {
             return Promise.reject(new Error(Index.ERRORS.CANNOT_FIND_SECTION('it does not exist')))
         }
 
-        return section.installArchive({ silent: args.silent, id: args.id, version: args.version })
+        const archive = await section.installArchive({ silent: args.silent, id: args.id, version: args.version })
+
+        installDeps && await archive.installDependencies()
+        
+        return archive
     }
 }
