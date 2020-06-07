@@ -78,7 +78,9 @@ export class Section implements ISection {
             return args.load ? _archive.load() : _archive
         }
         
-        await archive.download()
+        await archive.install([
+            "Installing, please hold on a minute ...", "Done"
+        ])
 
         return args.load ? archive.load() : archive
     }

@@ -67,7 +67,7 @@ export class Index {
         return Promise.all(Object.values(this.sections).map((section: any) => section.initialize()))
     }
 
-    async installArchive(args: any, installDeps: boolean = true) {
+    async installArchive(args: any) {
         const section = this.sections[args.section || Index.DEFAULT_ARCHIVES_SECTION]
 
         if (!section) {
@@ -76,8 +76,6 @@ export class Index {
 
         const archive = await section.installArchive({ silent: args.silent, id: args.id, version: args.version })
 
-        installDeps && await archive.installDependencies(["Installing dependencies, just a minute ...", "Done"])
-        
         return archive
     }
 }
