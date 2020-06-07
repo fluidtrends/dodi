@@ -19,5 +19,5 @@ export declare class Index {
     get sections(): any;
     get exists(): boolean | "";
     initialize(): Promise<any[]>;
-    installArchive(args: any, installDeps?: boolean): Promise<any>;
+    installArchive(args: any): Promise<any>;
 }
