@@ -76,7 +76,7 @@ export class Index {
 
         const archive = await section.installArchive({ silent: args.silent, id: args.id, version: args.version })
 
-        installDeps && await archive.installDependencies()
+        installDeps && await archive.installDependencies(["Installing dependencies, just a minute ...", "Done"])
         
         return archive
     }
